@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/BushehrCertificationsVerify/static/css/main.df9da27e.chunk.css",
+    "main.js": "/BushehrCertificationsVerify/static/js/main.e7d6de01.chunk.js",
+    "main.js.map": "/BushehrCertificationsVerify/static/js/main.e7d6de01.chunk.js.map",
+    "runtime-main.js": "/BushehrCertificationsVerify/static/js/runtime-main.d6e93df2.js",
+    "runtime-main.js.map": "/BushehrCertificationsVerify/static/js/runtime-main.d6e93df2.js.map",
+    "static/css/2.268bc818.chunk.css": "/BushehrCertificationsVerify/static/css/2.268bc818.chunk.css",
+    "static/js/2.cdf115f5.chunk.js": "/BushehrCertificationsVerify/static/js/2.cdf115f5.chunk.js",
+    "static/js/2.cdf115f5.chunk.js.map": "/BushehrCertificationsVerify/static/js/2.cdf115f5.chunk.js.map",
+    "index.html": "/BushehrCertificationsVerify/index.html",
+    "precache-manifest.0e2a7382c551bc697287eb22979e6c28.js": "/BushehrCertificationsVerify/precache-manifest.0e2a7382c551bc697287eb22979e6c28.js",
+    "service-worker.js": "/BushehrCertificationsVerify/service-worker.js",
+    "static/css/2.268bc818.chunk.css.map": "/BushehrCertificationsVerify/static/css/2.268bc818.chunk.css.map",
+    "static/css/main.df9da27e.chunk.css.map": "/BushehrCertificationsVerify/static/css/main.df9da27e.chunk.css.map",
+    "static/js/2.cdf115f5.chunk.js.LICENSE.txt": "/BushehrCertificationsVerify/static/js/2.cdf115f5.chunk.js.LICENSE.txt",
+    "static/media/semantic.min.css": "/BushehrCertificationsVerify/static/media/outline-icons.ef60a4f6.woff"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.d6e93df2.js",
+    "static/css/2.268bc818.chunk.css",
+    "static/js/2.cdf115f5.chunk.js",
+    "static/css/main.df9da27e.chunk.css",
+    "static/js/main.e7d6de01.chunk.js"
+  ]
+}
