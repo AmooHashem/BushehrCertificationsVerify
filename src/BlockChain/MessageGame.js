@@ -2,87 +2,80 @@ import React, { Component } from 'react';
 import {
   Container,
   Button,
-  Tab,
+  Grid,
 } from 'semantic-ui-react';
-import {
-  updatePageNumber,
-} from '../../../redux/actions/blockChain'
 import PublicPrivateKeyPane from './PublicPrivateKeyPane'
 import SignPane from './SignPane'
 import VerifyPane from './VerifyPane'
-import '../style.css';
-import { connect } from 'react-redux';
+import './style.css';
 
 class MessageGame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageNumber: 1,
+      pageNumber: 0,
     }
   }
 
   render() {
+    const { pageNumber } = this.state;
     return (
-      <Container>
-        {this.props.pageNumber === 0 &&
-          <PublicPrivateKeyPane />
-        }
-        {this.props.pageNumber === 1 &&
-          <SignPane />
-        }
-        {this.props.pageNumber === 2 &&
-          <VerifyPane />
-        }
-        <div
-          style={{
-            direction: 'rtl',
-            position: 'fixed',
-            bottom: '0',
-            left: '0',
-          }}
-        >
-          <Button
-            disabled={this.props.pageNumber === 0}
-            color='blue'
-            onClick={
-              () => this.props.updatePageNumber(0)
-            }
-          >
-            کلیدها
-          </Button>
+      <Container text >
+        <Grid centered style={{ direction: 'rtl' }}>
+          <Grid.Row verticalAlign='middle'>
+            <Grid.Column textAlign='center'>
+              {pageNumber === 0 &&
+                <PublicPrivateKeyPane />
+              }
+              {pageNumber === 1 &&
+                <SignPane />
+              }
+              {pageNumber === 2 &&
+                <VerifyPane />
+              }
+            </Grid.Column>
+          </Grid.Row>
 
-          <Button
-            disabled={this.props.pageNumber === 1}
-            color='blue'
-            onClick={
-              () => this.props.updatePageNumber(1)
-            }
-          >
-            امضا
-          </Button>
+          <Grid.Row verticalAlign='middle'>
+            <Grid.Column textAlign='center'>
+              <Button
+                disabled={pageNumber === 0}
+                primary
+                onClick={
+                  () => this.setState({ pageNumber: 0 })
+                }
+              >
+                کلیدها
+              </Button>
 
-          <Button
-            disabled={this.props.pageNumber === 2}
-            color='blue'
-            onClick={
-              () => this.props.updatePageNumber(2)
-            }
-          >
-            تایید امضا
-          </Button>
-        </div>
+              <Button
+                disabled={pageNumber === 1}
+                primary
+                onClick={
+                  () => this.setState({ pageNumber: 1 })
+                }
+              >
+                امضا
+              </Button>
+
+              <Button
+                disabled={pageNumber === 2}
+                primary
+                onClick={
+                  () => this.setState({ pageNumber: 2 })
+                }
+              >
+                تایید امضا
+              </Button>
+
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+
       </Container>
     )
   }
 }
 
-const mapStateToProps = (state) => ({
-  pageNumber: state.blockChain.pageNumber,
-})
 
-export default connect(
-  mapStateToProps,
-  {
-    updatePageNumber,
-  }
-)(MessageGame)
+export default MessageGame;

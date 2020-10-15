@@ -10,15 +10,8 @@ import {
   Label,
   Button,
 } from 'semantic-ui-react';
-import { connect } from 'react-redux';
 import './style.css';
-import { isHashValid } from './utilities'
-import { Crypt, RSA } from 'hybrid-crypto-js';
-import {
-  updateMessage,
-  updateMessageSignature,
-  updateLoading,
-} from '../../../redux/actions/blockChain'
+import { Crypt } from 'hybrid-crypto-js';
 
 var crypt = new Crypt();
 
@@ -27,28 +20,34 @@ class PublicPrivateKeyPane extends Component {
     super(props);
     this.state = {
       isMining: false,
+      isLoading: false,
+      privateKey: '',
+      message: '',
+      messageSignature: '',
     };
     this.handleChange = this.handleChange.bind(this)
     this.sign = this.sign.bind(this)
   }
 
   sign() {
-    this.props.updateLoading(true)
-    var signature = crypt.signature(this.props.privateKey, this.props.message);
-    this.props.updateMessageSignature(signature)
-    this.props.updateLoading(false)
+    this.setState({ isLoading: true })
+    var signature = crypt.signature(this.state.privateKey, this.state.message);
+    this.setState({ messageSignature: signature })
+    this.setState({ isLoading: false })
   }
 
   handleChange = (event) => {
     const { value } = event.target;
-    this.props.updateMessage(value)
+    this.setState({ message: value })
   }
 
   render() {
+    const { message, privateKey, isLoading, messageSignature } = this.state;
+
     return (
       <Container text>
-        <Grid columns={1} verticalAlign='middle' centered>
-          <Grid.Row>
+        <Grid centered>
+          <Grid.Row verticalAlign='middle' columns={1}>
             <Grid.Column>
               <Segment>
                 <Form style={{ direction: 'rtl', textAlign: 'right' }}>
@@ -57,7 +56,7 @@ class PublicPrivateKeyPane extends Component {
                   </Label>
                   <br />
                   <TextArea
-                    value={this.props.message}
+                    value={message}
                     style={{ direction: 'rtl' }}
                     placeholder='پیغامتو بنویس :)'
                     onChange={this.handleChange}
@@ -69,13 +68,13 @@ class PublicPrivateKeyPane extends Component {
                     <input
                       disabled
                       style={{ textAlign: 'center' }}
-                      value={this.props.privateKey ? sha256(this.props.privateKey) : 'محل کلید خصوصی شما...'}
+                      value={privateKey ? sha256(privateKey) : 'محل کلید خصوصی شما...'}
                     />
                   </Input>
                   <br />
                   <br />
                   <Button
-                    disabled={this.props.isLoading || !this.props.privateKey}
+                    disabled={isLoading || !privateKey}
                     color='green'
                     style={{ direction: 'rtl' }}
                     onClick={this.sign}
@@ -87,7 +86,7 @@ class PublicPrivateKeyPane extends Component {
                     <input
                       disabled
                       style={{ textAlign: 'center' }}
-                      value={this.props.messageSignature ? sha256(this.props.messageSignature) : 'محل امضای پیغام شما...'}
+                      value={messageSignature ? sha256(messageSignature) : 'محل امضای پیغام شما...'}
                     />
                   </Input>
                 </Form>
@@ -101,18 +100,4 @@ class PublicPrivateKeyPane extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  privateKey: state.blockChain.privateKey,
-  message: state.blockChain.message,
-  messageSignature: state.blockChain.messageSignature,
-  isLoading: state.blockChain.isLoading,
-});
-
-export default connect(
-  mapStateToProps,
-  {
-    updateMessage,
-    updateMessageSignature,
-    updateLoading,
-  }
-)(PublicPrivateKeyPane)
+export default PublicPrivateKeyPane;

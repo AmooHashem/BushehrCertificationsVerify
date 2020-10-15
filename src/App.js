@@ -1,10 +1,11 @@
 import React from 'react';
+import MessageGame from './BlockChain/MessageGame'
 
 function App() {
   return (
     <div>
       <header>
-        salam
+        <MessageGame />
       </header>
     </div>
   );

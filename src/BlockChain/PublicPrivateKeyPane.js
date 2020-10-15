@@ -9,33 +9,33 @@ import {
   Label,
   Button,
 } from 'semantic-ui-react';
-import { connect } from 'react-redux';
 import './style.css';
 import { Crypt, RSA } from 'hybrid-crypto-js';
-import {
-  updatePrivateKey,
-  updatePublicKey,
-  updateLoading,
-} from '../../../redux/actions/blockChain'
-
 var rsa = new RSA()
 
 class PublicPrivateKeyPane extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      privateKey: '',
+      publicKey: '',
+      isLoading: false,
+    }
     this.generateNewKey = this.generateNewKey.bind(this)
   }
 
   generateNewKey() {
-    this.props.updateLoading(true)
+    this.setState({ isLoading: true })
     rsa.generateKeyPairAsync().then(keyPair => {
-      this.props.updatePrivateKey(keyPair.privateKey)
-      this.props.updatePublicKey(keyPair.publicKey)
-      this.props.updateLoading(false)
+      this.setState({ privateKey: keyPair.privateKey })
+      this.setState({ publicKey: keyPair.publicKey })
+      this.setState({ isLoading: false })
     });
   }
 
   render() {
+    const { privateKey, publicKey, isLoading } = this.state;
+
     return (
       <Container text>
         <Grid columns={1} verticalAlign='middle' centered>
@@ -54,7 +54,7 @@ class PublicPrivateKeyPane extends Component {
                     <input
                       disabled
                       style={{ textAlign: 'center' }}
-                      value={this.props.privateKey ? sha256(this.props.privateKey) : 'محل کلید خصوصی شما...'}
+                      value={privateKey ? sha256(privateKey) : 'محل کلید خصوصی شما...'}
                     />
                   </Input>
                   <Label size='medium' color='blue' >
@@ -64,13 +64,13 @@ class PublicPrivateKeyPane extends Component {
                     <input
                       disabled
                       style={{ textAlign: 'center' }}
-                      value={this.props.publicKey ? sha256(this.props.publicKey) : 'محل کلید عمومی شما...'}
+                      value={publicKey ? sha256(publicKey) : 'محل کلید عمومی شما...'}
                     />
                   </Input>
                   <br />
                   <br />
                   <Button
-                    disabled={this.props.isLoading}
+                    disabled={isLoading}
                     color='green'
                     style={{ direction: 'rtl' }}
                     onClick={this.generateNewKey}
@@ -88,17 +88,5 @@ class PublicPrivateKeyPane extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  privateKey: state.blockChain.privateKey,
-  publicKey: state.blockChain.publicKey,
-  isLoading: state.blockChain.isLoading,
-});
 
-export default connect(
-  mapStateToProps,
-  {
-    updatePrivateKey,
-    updatePublicKey,
-    updateLoading,
-  }
-)(PublicPrivateKeyPane)
+export default PublicPrivateKeyPane;

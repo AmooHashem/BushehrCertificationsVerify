@@ -10,16 +10,9 @@ import {
   Label,
   Button,
 } from 'semantic-ui-react';
-import { connect } from 'react-redux';
 import './style.css';
 import { isHashValid } from './utilities'
 import { Crypt, RSA } from 'hybrid-crypto-js';
-import {
-  updateNewMessage,
-  updateLoading,
-  updateVerificationStatus,
-  updateFirstAttemp,
-} from '../../../redux/actions/blockChain'
 
 var crypt = new Crypt();
 
@@ -120,12 +113,4 @@ const mapStateToProps = (state) => ({
   isLoading: state.blockChain.isLoading,
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    updateVerificationStatus,
-    updateNewMessage,
-    updateLoading,
-    updateFirstAttemp,
-  }
-)(VerifyPane)
+export default VerifyPane;
