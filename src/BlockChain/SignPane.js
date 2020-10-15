@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { sha256 } from 'js-sha256';
 import {
   Input,
   Container,
@@ -9,6 +8,7 @@ import {
   Segment,
   Label,
   Button,
+  Message,
 } from 'semantic-ui-react';
 import './style.css';
 import { Crypt } from 'hybrid-crypto-js';
@@ -24,25 +24,25 @@ class PublicPrivateKeyPane extends Component {
       privateKey: '',
       message: '',
       messageSignature: '',
+      error: false,
     };
-    this.handleChange = this.handleChange.bind(this)
     this.sign = this.sign.bind(this)
   }
 
   sign() {
     this.setState({ isLoading: true })
-    var signature = crypt.signature(this.state.privateKey, this.state.message);
+    try {
+      var signature = crypt.signature(this.state.privateKey, this.state.message);
+    } catch{
+      this.setState({ error: true })
+    }
     this.setState({ messageSignature: signature })
     this.setState({ isLoading: false })
   }
 
-  handleChange = (event) => {
-    const { value } = event.target;
-    this.setState({ message: value })
-  }
 
   render() {
-    const { message, privateKey, isLoading, messageSignature } = this.state;
+    const { message, privateKey, isLoading, messageSignature, error } = this.state;
 
     return (
       <Container text>
@@ -55,24 +55,37 @@ class PublicPrivateKeyPane extends Component {
                     {'امضا'}
                   </Label>
                   <br />
-                  <TextArea
+                  <br />
+                  <Label size='medium' color='blue'>
+                    پیغام:
+                  </Label>
+                  <TextArea style={{ width: '100%', height: '100px', textAlign: 'center' }}
                     value={message}
-                    style={{ direction: 'rtl' }}
                     placeholder='پیغامتو بنویس :)'
-                    onChange={this.handleChange}
+                    onChange={(e) => this.setState({ message: e.target.value })}
                   />
+                  <br />
+                  <br />
                   <Label size='medium' color='blue'>
                     کلید خصوصی:
                   </Label>
-                  <Input style={{ width: '100%' }}>
-                    <input
-                      disabled
-                      style={{ textAlign: 'center' }}
-                      value={privateKey ? sha256(privateKey) : 'محل کلید خصوصی شما...'}
-                    />
-                  </Input>
+                  <TextArea style={{ width: '100%', height: '200px', textAlign: 'center' }}
+                    placeholder='محل کلید خصوصی شما...'
+                    onChange={(e) => this.setState({ privateKey: e.target.value })}
+                  />
                   <br />
                   <br />
+                  {error && !isLoading &&
+                    <>
+                      <Message
+                        color='red'
+                        style={{ direction: 'rtl' }}
+                      >
+                        <Message.Header>یه مشکلی وجود داره.</Message.Header>
+                        <p>احتمالاً فرمت کلید خصوصیت اشتباهه...</p>
+                      </Message>
+                    </>
+                  }
                   <Button
                     disabled={isLoading || !privateKey}
                     color='green'
@@ -82,13 +95,11 @@ class PublicPrivateKeyPane extends Component {
                     امضاش کن!
                   </Button>
                   <br />
-                  <Input style={{ width: '100%' }}>
-                    <input
-                      disabled
-                      style={{ textAlign: 'center' }}
-                      value={messageSignature ? sha256(messageSignature) : 'محل امضای پیغام شما...'}
-                    />
-                  </Input>
+                  <br />
+                  <TextArea style={{ width: '100%', height: '100px', textAlign: 'center' }}
+                    disabled
+                    value={messageSignature ? messageSignature : 'محل امضای پیغام شما...'}
+                  />
                 </Form>
 
               </Segment>

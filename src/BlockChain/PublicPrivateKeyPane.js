@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { sha256 } from 'js-sha256';
 import {
-  Input,
   Container,
   Grid,
   Form,
   Segment,
   Label,
   Button,
+  TextArea,
 } from 'semantic-ui-react';
 import './style.css';
 import { Crypt, RSA } from 'hybrid-crypto-js';
@@ -38,8 +37,8 @@ class PublicPrivateKeyPane extends Component {
 
     return (
       <Container text>
-        <Grid columns={1} verticalAlign='middle' centered>
-          <Grid.Row>
+        <Grid centered>
+          <Grid.Row verticalAlign='middle' columns={1}>
             <Grid.Column>
               <Segment>
                 <Form style={{ direction: 'rtl', textAlign: 'right' }}>
@@ -47,26 +46,23 @@ class PublicPrivateKeyPane extends Component {
                     {'کلید‌های خصوصی و عمومی'}
                   </Label>
                   <br />
+                  <br />
                   <Label size='medium' color='blue'>
                     کلید خصوصی:
                   </Label>
-                  <Input style={{ width: '100%' }}>
-                    <input
-                      disabled
-                      style={{ textAlign: 'center' }}
-                      value={privateKey ? sha256(privateKey) : 'محل کلید خصوصی شما...'}
-                    />
-                  </Input>
+                  <TextArea style={{ width: '100%', height: '200px', textAlign: 'center' }}
+                    disabled
+                    value={privateKey ? privateKey : 'محل کلید خصوصی شما...'}
+                  />
+                  <br />
+                  <br />
                   <Label size='medium' color='blue' >
                     کلید عمومی:
                   </Label>
-                  <Input style={{ width: '100%' }}>
-                    <input
-                      disabled
-                      style={{ textAlign: 'center' }}
-                      value={publicKey ? sha256(publicKey) : 'محل کلید عمومی شما...'}
-                    />
-                  </Input>
+                  <TextArea style={{ width: '100%', height: '200px', textAlign: 'center' }}
+                    disabled
+                    value={publicKey ? publicKey : 'محل کلید عمومی شما...'}
+                  />
                   <br />
                   <br />
                   <Button
